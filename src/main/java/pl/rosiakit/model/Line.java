@@ -106,7 +106,7 @@ public class Line implements Serializable, Comparable{
 
     @Override
     public String toString() {
-        return "Line{" + "name=" + name + ", agencyName=" + agencyName + ", type=" + type + '}';
+        return "Line{" + "stopName=" + name + ", agencyName=" + agencyName + ", type=" + type + '}';
     }
 
         

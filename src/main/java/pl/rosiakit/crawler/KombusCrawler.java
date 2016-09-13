@@ -82,4 +82,8 @@ public class KombusCrawler extends ZTMPoznanCrawler implements ScheduleCrawler{
         return jsonString;
     }
 
+    @Override
+    public String toString() {
+        return "KombusCrawler";
+    }
 }

@@ -547,4 +547,9 @@ public class ZTMPoznanCrawler extends AbstractJsonCrawler implements ScheduleCra
         
         return this.createURLFromAddress(address);
     }
+
+    @Override
+    public String toString() {
+        return "ZTMPoznanCrawler";
+    }
 }

@@ -1,0 +1,21 @@
+<dataSource name="czymDojade/Hibernate">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+    <schema id="1" name="czymdojade">
+      <visible>1</visible>
+    </schema>
+    <schema id="2" name="api" />
+    <schema id="3" name="cdcol" />
+    <schema id="4" name="incoming-centraleurope" />
+    <schema id="5" name="incoming-poland" />
+    <schema id="6" name="information_schema" />
+    <schema id="7" name="joomla" />
+    <schema id="8" name="mysql" />
+    <schema id="9" name="performance_schema" />
+    <schema id="10" name="phpmyadmin" />
+    <schema id="11" name="springdb" />
+    <schema id="12" name="springdb_backup" />
+    <schema id="13" name="test" />
+    <schema id="14" name="webauth" />
+    <schema id="15" name="wklejarka" />
+  </database-model>
+</dataSource>

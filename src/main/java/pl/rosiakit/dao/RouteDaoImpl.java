@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class RouteDaoImpl extends AbstractDao<Integer, Route> implements RouteDao{
+class RouteDaoImpl extends AbstractDao<Integer, Route> implements RouteDao{
 
     @Override
     public List<Route> findLineRoutes(Line line){

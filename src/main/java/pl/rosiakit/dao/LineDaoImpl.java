@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class LineDaoImpl extends AbstractDao<Integer, Line> implements LineDao{
+class LineDaoImpl extends AbstractDao<Integer, Line> implements LineDao{
 
     @Override
     public Line findById(int id){

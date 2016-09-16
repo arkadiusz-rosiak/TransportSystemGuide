@@ -3,9 +3,7 @@ package pl.rosiakit.finder;
 import org.jgrapht.graph.ClassBasedEdgeFactory;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import pl.rosiakit.bo.LineBo;
-import pl.rosiakit.bo.LineBoImpl;
 import pl.rosiakit.bo.RouteBo;
-import pl.rosiakit.bo.RouteBoImpl;
 import pl.rosiakit.graph.PlatformsEdge;
 import pl.rosiakit.graph.StopsEdge;
 import pl.rosiakit.model.Line;
@@ -35,7 +33,7 @@ public class JourneysFinder {
     }
 
     private static void getLinesFromDB(){
-        LineBo lineBo = new LineBoImpl();
+        LineBo lineBo = LineBo.getInstance();
         List<Line> lines = lineBo.findAllLines();
         for(Line line : lines){
             LineEntry entry = new LineEntry(line);
@@ -44,7 +42,7 @@ public class JourneysFinder {
     }
 
     private static void getRoutesFromDB(){
-        RouteBo routeBo = new RouteBoImpl();
+        RouteBo routeBo = RouteBo.getInstance();
 
         for(Line line : lines.keySet()){
             LineEntry entry = lines.get(line);

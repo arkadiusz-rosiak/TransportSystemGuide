@@ -22,12 +22,12 @@ import java.util.logging.Level;
  */
 public class SchedulesDownloader {
 
-    private final PlatformBo platformBo = new PlatformBoImpl();
-    private final LineBo lineBo = new LineBoImpl();
-    private final StopBo stopBo = new StopBoImpl();
-    private final ConnectionBo connectionBo = new ConnectionBoImpl();
-    private final DepartureBo departureBo = new DepartureBoImpl();
-    private final RouteBo routeBo = new RouteBoImpl();
+    private final PlatformBo platformBo = PlatformBo.getInstance();
+    private final LineBo lineBo = LineBo.getInstance();
+    private final StopBo stopBo = StopBo.getInstance();
+    private final ConnectionBo connectionBo = ConnectionBo.getInstance();
+    private final DepartureBo departureBo = DepartureBo.getInstance();
+    private final RouteBo routeBo = RouteBo.getInstance();
     private LocalDate ScheduleValidSince;
 
     private void saveScheduleToDatabase(ScheduleCrawler crawler){

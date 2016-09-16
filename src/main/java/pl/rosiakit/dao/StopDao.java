@@ -11,6 +11,10 @@ import java.util.List;
  */
 public interface StopDao {
 
+    static StopDao getInstance(){
+        return new StopDaoImpl();
+    }
+
     Stop findById(int id);
 
     Stop findSingleByName(String name);

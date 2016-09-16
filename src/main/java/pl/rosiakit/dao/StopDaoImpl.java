@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class StopDaoImpl extends AbstractDao<Integer, Stop> implements StopDao {
+class StopDaoImpl extends AbstractDao<Integer, Stop> implements StopDao {
 
     @Override
     public Stop findById(int id){

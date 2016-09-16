@@ -2,7 +2,6 @@
 package pl.rosiakit.bo;
 
 import pl.rosiakit.dao.LineDao;
-import pl.rosiakit.dao.LineDaoImpl;
 import pl.rosiakit.model.Line;
 import pl.rosiakit.model.VehicleType;
 
@@ -12,9 +11,9 @@ import java.util.List;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class LineBoImpl implements LineBo {
+class LineBoImpl implements LineBo {
 
-    private final LineDao dao = new LineDaoImpl();
+    private final LineDao dao = LineDao.getInstance();
     
     @Override
     public Line findById(int id){

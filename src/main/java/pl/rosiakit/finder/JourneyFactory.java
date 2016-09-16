@@ -1,7 +1,6 @@
 package pl.rosiakit.finder;
 
 import pl.rosiakit.bo.DepartureBo;
-import pl.rosiakit.bo.DepartureBoImpl;
 import pl.rosiakit.graph.PlatformsEdge;
 import pl.rosiakit.model.Departure;
 import pl.rosiakit.model.Line;
@@ -22,7 +21,7 @@ class JourneyFactory {
 
     private Set<JourneyPattern> foundPatterns = new HashSet<>();
 
-    private static DepartureBo departureBo = new DepartureBoImpl();
+    private static DepartureBo departureBo = DepartureBo.getInstance();
 
     private int minTransfers = Integer.MAX_VALUE;
 

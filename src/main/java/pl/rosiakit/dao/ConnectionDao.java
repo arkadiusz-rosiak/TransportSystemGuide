@@ -10,6 +10,10 @@ import pl.rosiakit.model.Platform;
  */
 public interface ConnectionDao {
 
+    static ConnectionDao getInstance(){
+        return new ConnectionDaoImpl();
+    }
+
     Connection findById(int id);
     
     Connection findBySourceTarget(Platform source, Platform target);

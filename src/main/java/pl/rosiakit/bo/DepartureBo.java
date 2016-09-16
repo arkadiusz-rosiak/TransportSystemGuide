@@ -15,6 +15,10 @@ import java.util.List;
  */
 public interface DepartureBo {
 
+    static DepartureBo getInstance(){
+        return new DepartureBoImpl();
+    }
+
     List<Departure> findLineDeparturesAfter(Platform platform, int dayType, Line line, LocalTime time);
 
     void saveDeparture(Departure departure);

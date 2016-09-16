@@ -14,6 +14,10 @@ import java.util.Map;
  */
 public interface RouteBo {
 
+    static RouteBo getInstance(){
+        return new RouteBoImpl();
+    }
+
     Map<Integer, List<Route>> findLineRoutesSplitByDirection(Line line);
 
     List<Route> findLineRoutes(Line line);

@@ -10,7 +10,11 @@ import java.util.List;
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
 public interface PlatformDao {
-    
+
+    static PlatformDao getInstance(){
+        return new PlatformDaoImpl();
+    }
+
     Platform findById(String id);
 
     List<Platform> findInRectangle(float lat1, float lat2, float lng1, float lng2);

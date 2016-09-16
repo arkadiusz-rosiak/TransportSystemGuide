@@ -10,6 +10,10 @@ import pl.rosiakit.model.Platform;
  */
 public interface ConnectionBo {
 
+    static ConnectionBo getInstance(){
+        return new ConnectionBoImpl();
+    }
+
     Connection findConnectionBySourceTarget(Platform source, Platform target);
 
     void saveConnection(Connection connection);

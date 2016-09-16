@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class PlatformDaoImpl extends AbstractDao<String, Platform> implements PlatformDao{
+class PlatformDaoImpl extends AbstractDao<String, Platform> implements PlatformDao{
     
     @Override
     public Platform findById(String id){

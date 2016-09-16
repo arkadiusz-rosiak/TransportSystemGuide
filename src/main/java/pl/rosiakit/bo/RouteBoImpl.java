@@ -2,7 +2,6 @@
 package pl.rosiakit.bo;
 
 import pl.rosiakit.dao.RouteDao;
-import pl.rosiakit.dao.RouteDaoImpl;
 import pl.rosiakit.model.Line;
 import pl.rosiakit.model.Route;
 
@@ -12,9 +11,9 @@ import java.util.*;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class RouteBoImpl implements RouteBo{
+class RouteBoImpl implements RouteBo{
 
-    private final RouteDao dao = new RouteDaoImpl();
+    private final RouteDao dao = RouteDao.getInstance();
 
     @Override
     public Map<Integer, List<Route>> findLineRoutesSplitByDirection(Line line) {

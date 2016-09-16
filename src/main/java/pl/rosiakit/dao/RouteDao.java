@@ -13,6 +13,10 @@ import java.util.List;
  */
 public interface RouteDao {
 
+    static RouteDao getInstance(){
+        return new RouteDaoImpl();
+    }
+
     List<Route> findLineRoutes(Line line);
     
     void save(Route route);

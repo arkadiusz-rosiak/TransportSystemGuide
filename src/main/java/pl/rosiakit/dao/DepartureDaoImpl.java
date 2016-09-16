@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class DepartureDaoImpl extends AbstractDao<Integer, Departure> implements DepartureDao{
+class DepartureDaoImpl extends AbstractDao<Integer, Departure> implements DepartureDao{
 
     @Override
     public List<Departure> findLineDeparturesAfter(Platform platform, int dayType, Line line, LocalTime time){

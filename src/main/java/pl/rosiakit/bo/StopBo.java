@@ -11,6 +11,10 @@ import java.util.List;
  */
 public interface StopBo {
 
+    static StopBo getInstance(){
+        return new StopBoImpl();
+    }
+
     Stop findStopById(int id);
 
     Stop findSingleStopByName(String name);

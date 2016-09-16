@@ -2,7 +2,6 @@
 package pl.rosiakit.bo;
 
 import pl.rosiakit.dao.StopDao;
-import pl.rosiakit.dao.StopDaoImpl;
 import pl.rosiakit.model.Stop;
 
 import java.util.List;
@@ -11,9 +10,9 @@ import java.util.List;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class StopBoImpl implements StopBo{
+class StopBoImpl implements StopBo{
 
-    private final StopDao dao = new StopDaoImpl();
+    private final StopDao dao = StopDao.getInstance();
     
     @Override
     public Stop findStopById(int id){

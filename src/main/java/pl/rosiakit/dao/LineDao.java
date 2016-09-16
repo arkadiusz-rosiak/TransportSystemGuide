@@ -12,6 +12,10 @@ import java.util.List;
  */
 public interface LineDao {
 
+    static LineDao getInstance(){
+        return new LineDaoImpl();
+    }
+
     Line findById(int id);
 
     Line findByAgencyAndName(String agency, String name);

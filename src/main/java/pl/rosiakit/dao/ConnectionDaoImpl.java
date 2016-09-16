@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class ConnectionDaoImpl extends AbstractDao<Integer, Connection> implements ConnectionDao{
+class ConnectionDaoImpl extends AbstractDao<Integer, Connection> implements ConnectionDao{
 
     @Override
     public Connection findById(int id){

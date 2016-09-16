@@ -10,7 +10,11 @@ import java.util.List;
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
 public interface PlatformBo {
-    
+
+    static PlatformBo getInstance(){
+        return new PlatformBoImpl();
+    }
+
     Platform findById(String id);
 
     List<Platform> findPlatformsNearestToPoint(float lat, float lng, int maxDist);

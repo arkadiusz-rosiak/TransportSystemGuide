@@ -15,6 +15,10 @@ import java.util.List;
  */
 public interface DepartureDao {
 
+    static DepartureDao getInstance(){
+        return new DepartureDaoImpl();
+    }
+
     List<Departure> findLineDeparturesAfter(Platform platform, int dayType, Line line, LocalTime time);
 
     void saveDeparture(Departure departure);

@@ -2,7 +2,6 @@
 package pl.rosiakit.bo;
 
 import pl.rosiakit.dao.PlatformDao;
-import pl.rosiakit.dao.PlatformDaoImpl;
 import pl.rosiakit.model.Platform;
 import pl.rosiakit.utils.Haversine;
 
@@ -13,9 +12,9 @@ import java.util.List;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class PlatformBoImpl implements PlatformBo{
+class PlatformBoImpl implements PlatformBo{
 
-    private final PlatformDao dao = new PlatformDaoImpl();
+    private final PlatformDao dao = PlatformDao.getInstance();
     
     @Override
     public Platform findById(String id){

@@ -2,7 +2,6 @@
 package pl.rosiakit.bo;
 
 import pl.rosiakit.dao.DepartureDao;
-import pl.rosiakit.dao.DepartureDaoImpl;
 import pl.rosiakit.model.Departure;
 import pl.rosiakit.model.Line;
 import pl.rosiakit.model.Platform;
@@ -15,9 +14,9 @@ import java.util.List;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class DepartureBoImpl implements DepartureBo {
+class DepartureBoImpl implements DepartureBo {
 
-    private final DepartureDao dao = new DepartureDaoImpl();
+    private final DepartureDao dao = DepartureDao.getInstance();
 
     @Override
     public List<Departure> findLineDeparturesAfter(Platform platform, int dayType, Line line, LocalTime time){

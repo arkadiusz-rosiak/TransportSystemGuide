@@ -10,7 +10,11 @@ import java.util.List;
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
 public interface LineBo {
-    
+
+    static LineBo getInstance(){
+        return new LineBoImpl();
+    }
+
     Line findById(int id);
 
     List<Line> findLinesByAgency(String agency);

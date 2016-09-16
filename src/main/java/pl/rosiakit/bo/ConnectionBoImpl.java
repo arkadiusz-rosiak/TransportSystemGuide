@@ -2,7 +2,6 @@
 package pl.rosiakit.bo;
 
 import pl.rosiakit.dao.ConnectionDao;
-import pl.rosiakit.dao.ConnectionDaoImpl;
 import pl.rosiakit.model.Connection;
 import pl.rosiakit.model.Platform;
 
@@ -10,9 +9,9 @@ import pl.rosiakit.model.Platform;
  *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
  */
-public class ConnectionBoImpl implements ConnectionBo{
+class ConnectionBoImpl implements ConnectionBo{
 
-    private final ConnectionDao dao = new ConnectionDaoImpl();
+    private final ConnectionDao dao = ConnectionDao.getInstance();
 
     @Override
     public Connection findConnectionBySourceTarget(Platform source, Platform target){

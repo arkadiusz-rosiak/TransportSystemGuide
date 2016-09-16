@@ -26,13 +26,13 @@ class PathsFinder {
 
         Set<List<Stop>> travelPoints = new HashSet<>(bfsPoints);
         for(List<Stop> points : bfsPoints){
-            travelPoints.addAll(delete(points));
+            travelPoints.addAll(createNewPointsListsByDeletingSomePoints(points));
         }
 
         return travelPoints;
     }
 
-    private static Set<List<Stop>> delete(List<Stop> travelPoints){
+    private static Set<List<Stop>> createNewPointsListsByDeletingSomePoints(List<Stop> travelPoints){
         Set<List<Stop>> newPoints = new HashSet<>();
 
         for(int i = 1; i < travelPoints.size()-1; ++i){

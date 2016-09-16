@@ -116,6 +116,7 @@ class JourneyFactory {
 
             List<PlatformsEdge> path = JourneysFinder.findLinePathBetweenStops(line, source, target);
 
+
             Map<PlatformsEdge, Line> lines = new HashMap<>();
             for(PlatformsEdge edge : path){
                 lines.put(edge, line);

@@ -77,7 +77,7 @@ public class JourneysFinder {
 
     private Set<Journey> generateJourneys(Set<JourneyPattern> travelPatterns){
 
-        return travelPatterns.stream().filter(Objects::nonNull)
+        return travelPatterns.stream().filter(pattern -> pattern.getPath().size() > 0)
                 .map(pattern -> JourneyFactory.createJourneyBasedOn(pattern, departureTime))
                 .collect(Collectors.toSet());
     }
@@ -85,6 +85,7 @@ public class JourneysFinder {
     private Set<JourneyPattern> generateJourneyPatternsViaPoints(Set<List<Stop>> travelPoints){
 
         Set<JourneyPattern> patternsFound = new HashSet<>();
+        Set<JourneyPattern> filteredPatterns = new HashSet<>();
 
         for(List<Stop> oneTravelPoints : travelPoints){
             patternsFound.addAll(JourneyFactory.preparePatternsViaPoints(oneTravelPoints));
@@ -94,7 +95,15 @@ public class JourneysFinder {
         Set<JourneyPattern> minEdgesPatterns = patternsWithEdgesCountLowerThan(minEdgesCount, patternsFound);
 
         int minTransfersFound = findMinimumTransferCount(minEdgesPatterns);
-        return patternsWithTransferCountLowerThan(minTransfersFound, minEdgesPatterns);
+        filteredPatterns = patternsWithTransferCountLowerThan(minTransfersFound, minEdgesPatterns);
+
+        for(JourneyPattern pattern : patternsFound){
+            if(pattern.getTransfers() == 0){
+                filteredPatterns.add(pattern);
+            }
+        }
+
+        return filteredPatterns;
     }
 
     private Set<JourneyPattern> patternsWithEdgesCountLowerThan(int maxEdgesCount, Set<JourneyPattern> patterns){

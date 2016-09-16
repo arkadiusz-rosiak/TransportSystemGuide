@@ -23,6 +23,7 @@ class PathsFinder {
 
         bfsPoints.addAll(bfsPaths.stream().map(PathsFinder::findDiscontinuityPoints).collect(Collectors.toList()));
 
+        System.out.println(bfsPaths);
 
         Set<List<Stop>> travelPoints = new HashSet<>(bfsPoints);
         for(List<Stop> points : bfsPoints){
@@ -38,6 +39,13 @@ class PathsFinder {
         for(int i = 1; i < travelPoints.size()-1; ++i){
             List<Stop> newList = new ArrayList<>(travelPoints);
             newList.remove(i);
+            newPoints.add(newList);
+        }
+
+        for(int i = 1; i < travelPoints.size()-2; i=i+2){
+            List<Stop> newList = new ArrayList<>(travelPoints);
+            newList.remove(i);
+            newList.remove(i+1);
             newPoints.add(newList);
         }
 

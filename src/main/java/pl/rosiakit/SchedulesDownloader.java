@@ -303,7 +303,7 @@ public class SchedulesDownloader {
         List<ScheduleCrawler> crawlers = new LinkedList<>();
 
         String[] kombusList = {"1","2","3","4","5","6","10","11","12","13","14","15","16","17","18","19","20"};
-        String[] ztmBlackList = {"201","231","232","233","234","235","236","237","238","239","240","242","243","244",
+        String[] ztmBlackList = {"0","100","201","231","232","233","234","235","236","237","238","239","240","242","243","244",
                 "245","246","247","248","249","251","252"};
 
         crawlers.add(new KombusCrawler(kombusList, ListType.WHITELIST));

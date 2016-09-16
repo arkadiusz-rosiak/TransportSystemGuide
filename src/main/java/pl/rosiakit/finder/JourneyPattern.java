@@ -2,7 +2,6 @@ package pl.rosiakit.finder;
 
 import pl.rosiakit.graph.PlatformsEdge;
 import pl.rosiakit.model.Line;
-import pl.rosiakit.model.Platform;
 
 import java.util.*;
 
@@ -95,17 +94,13 @@ class JourneyPattern {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(path.get(0).getSource());
-        sb.append(" ");
-
-        for(int i=1; i < path.size(); ++i){
-            Platform platform = path.get(i).getSource();
-            Line line = lines.get(path.get(i));
-
-            sb.append(line.getName());
+        for(PlatformsEdge edge : path){
+            sb.append(edge.getSource().getStop().getName());
+            sb.append(" -> ");
+            sb.append(edge.getTarget().getStop().getName());
+            sb.append(": ");
+            sb.append(lines.get(edge));
             sb.append("\n");
-            sb.append(platform);
-            sb.append(" ");
         }
 
         return sb.toString();

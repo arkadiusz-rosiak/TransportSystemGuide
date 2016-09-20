@@ -1,4 +1,3 @@
-
 package pl.rosiakit.bo;
 
 import pl.rosiakit.model.Stop;
@@ -6,14 +5,10 @@ import pl.rosiakit.model.Stop;
 import java.util.List;
 
 /**
- *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
+ * @date 2016-09-16
  */
 public interface StopBo {
-
-    static StopBo getInstance(){
-        return new StopBoImpl();
-    }
 
     Stop findStopById(int id);
 
@@ -22,8 +17,8 @@ public interface StopBo {
     List<Stop> findStopsByName(String name);
 
     void saveStop(Stop stop);
-    
+
     void deleteStop(Stop stop);
-    
+
     List<Stop> findAllStops();
 }

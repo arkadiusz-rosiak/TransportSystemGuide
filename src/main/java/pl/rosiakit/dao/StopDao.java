@@ -1,30 +1,22 @@
-
 package pl.rosiakit.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import pl.rosiakit.model.Stop;
 
 import java.util.List;
 
 /**
- *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
+ * @date 2016-09-16
  */
-public interface StopDao {
-
-    static StopDao getInstance(){
-        return new StopDaoImpl();
-    }
+public interface StopDao extends JpaRepository<Stop, Long> {
 
     Stop findById(int id);
 
-    Stop findSingleByName(String name);
+    Stop findByName(String name);
 
-    List<Stop> findByName(String name);
-    
-    void saveStop(Stop stop);
-    
-    void deleteStop(Stop stop);
-        
-    List<Stop> findAllStops();
-    
+    List<Stop> findByNameStartingWithOrderByNameAsc(String name);
+
+    List<Stop> findByOrderByNameAsc();
+
 }

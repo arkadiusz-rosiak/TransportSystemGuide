@@ -1,5 +1,7 @@
 package pl.rosiakit.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -18,16 +20,19 @@ public class Line implements Serializable, Comparable{
     private int id;
     
     @Column(nullable = false)
+    @JsonView(JsonViewsContainer.LinesSummary.class)
     private String name;
         
     @Column(nullable = false)
     private LocalDate validSince;
 
     @Column(nullable = false)
+    @JsonView(JsonViewsContainer.LinesSummary.class)
     private String agencyName;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @JsonView(JsonViewsContainer.LinesSummary.class)
     private VehicleType type;
     
     public int getId() {

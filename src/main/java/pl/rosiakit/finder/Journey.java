@@ -1,6 +1,8 @@
 package pl.rosiakit.finder;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import pl.rosiakit.graph.PlatformsEdge;
+import pl.rosiakit.model.JsonViewsContainer;
 import pl.rosiakit.model.Line;
 import pl.rosiakit.model.Platform;
 
@@ -16,6 +18,28 @@ public class Journey implements Comparable{
 
     private List<LocalTime> departures = new ArrayList<>();
 
+    @JsonView(JsonViewsContainer.JourneyView.class)
+    private Platform source;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
+    private Platform target;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
+    private int travelTime;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
+    private LocalTime departureTime;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
+    private LocalTime arrivalTime;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
+    private boolean isDirect;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
+    private int comfortIndex;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
     private List<JourneyStep> steps = new ArrayList<>();
 
     private final JourneyPattern pattern;
@@ -25,6 +49,14 @@ public class Journey implements Comparable{
             this.pattern = pattern;
             this.departures.addAll(departures);
             this.splitJourneyIntoSteps();
+
+            this.source = this.getSourcePlatform();
+            this.target = this.getTargetPlatform();
+            this.travelTime = this.getTravelTime();
+            this.departureTime = this.getDepartureTime();
+            this.arrivalTime = this.getArrivalTime();
+            this.isDirect = this.isDirect();
+            this.comfortIndex = (int) Math.round(this.getComfortIndex());
         }
         else{
             throw new IllegalArgumentException("Departures list size must be equal to line map size");
@@ -158,7 +190,7 @@ public class Journey implements Comparable{
         }
     }
 
-    JourneyPattern getPattern(){
+    public JourneyPattern getPattern(){
         return this.pattern;
     }
 
@@ -188,7 +220,7 @@ public class Journey implements Comparable{
     }
 
     public double getComfortIndex(){
-        return getEdgesCount() / getTransfersCount();
+        return getTransfersCount();
     }
 
     private int getLinesCount(){

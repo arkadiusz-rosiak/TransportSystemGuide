@@ -1,20 +1,15 @@
 package pl.rosiakit;
 
 import pl.rosiakit.bo.*;
-import pl.rosiakit.crawler.KombusCrawler;
-import pl.rosiakit.crawler.ListType;
 import pl.rosiakit.crawler.ScheduleCrawler;
-import pl.rosiakit.crawler.ZTMPoznanCrawler;
 import pl.rosiakit.crawler.dto.DepartureDTO;
 import pl.rosiakit.crawler.dto.LineDTO;
 import pl.rosiakit.crawler.dto.PlatformDTO;
 import pl.rosiakit.crawler.dto.TimetableDTO;
-import pl.rosiakit.hibernate.HibernateUtil;
 import pl.rosiakit.model.*;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  *
@@ -22,15 +17,39 @@ import java.util.logging.Level;
  */
 public class SchedulesDownloader {
 
-    private final PlatformBo platformBo = PlatformBo.getInstance();
-    private final LineBo lineBo = LineBo.getInstance();
-    private final StopBo stopBo = StopBo.getInstance();
-    private final ConnectionBo connectionBo = ConnectionBo.getInstance();
-    private final DepartureBo departureBo = DepartureBo.getInstance();
-    private final RouteBo routeBo = RouteBo.getInstance();
+    private static PlatformBo platformBo;
+    private static LineBo lineBo;
+    private static StopBo stopBo;
+    private static ConnectionBo connectionBo;
+    private static DepartureBo departureBo;
+    private static RouteBo routeBo;
     private LocalDate ScheduleValidSince;
 
-    private void saveScheduleToDatabase(ScheduleCrawler crawler){
+    static void setPlatformBo(PlatformBo platformBo) {
+        SchedulesDownloader.platformBo = platformBo;
+    }
+
+    static void setLineBo(LineBo lineBo) {
+        SchedulesDownloader.lineBo = lineBo;
+    }
+
+    static void setStopBo(StopBo stopBo) {
+        SchedulesDownloader.stopBo = stopBo;
+    }
+
+    static void setConnectionBo(ConnectionBo connectionBo) {
+        SchedulesDownloader.connectionBo = connectionBo;
+    }
+
+    static void setDepartureBo(DepartureBo departureBo) {
+        SchedulesDownloader.departureBo = departureBo;
+    }
+
+    static void setRouteBo(RouteBo routeBo) {
+        SchedulesDownloader.routeBo = routeBo;
+    }
+
+    public void saveScheduleToDatabase(ScheduleCrawler crawler){
         System.out.println("-----------------------------");
         System.out.println(crawler.toString()+"...");
         System.out.println("-----------------------------");
@@ -84,6 +103,7 @@ public class SchedulesDownloader {
             }
             catch (Exception e){
                 System.err.println("Linia "+lineDto.name+" ("+lineDto.agencyName+") nie została pobrana!");
+                e.printStackTrace();
                 linesNotSaved.add(lineDto);
             }
 
@@ -295,8 +315,7 @@ public class SchedulesDownloader {
         return line;
     }
 
-
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
 
         SchedulesDownloader app = new SchedulesDownloader();
@@ -306,12 +325,12 @@ public class SchedulesDownloader {
         String[] ztmBlackList = {"0","100","201","231","232","233","234","235","236","237","238","239","240","242","243","244",
                 "245","246","247","248","249","251","252"};
 
-        crawlers.add(new KombusCrawler(kombusList, ListType.WHITELIST));
-        crawlers.add(new ZTMPoznanCrawler(ztmBlackList, ListType.BLACKLIST));
+        //crawlers.add(new KombusCrawler(kombusList, ListType.WHITELIST));
+        //crawlers.add(new ZTMPoznanCrawler(ztmBlackList, ListType.BLACKLIST));
+
+        crawlers.add(new ZTMPoznanCrawler(new String[]{"10"}, ListType.WHITELIST));
 
         crawlers.forEach(app::saveScheduleToDatabase);
-
-        HibernateUtil.shutdown();
-    }
+    }*/
 
 }

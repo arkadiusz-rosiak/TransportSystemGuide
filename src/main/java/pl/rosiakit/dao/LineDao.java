@@ -1,33 +1,25 @@
-
 package pl.rosiakit.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import pl.rosiakit.model.Line;
 import pl.rosiakit.model.VehicleType;
 
 import java.util.List;
 
 /**
- *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
+ * @date 2016-09-19
  */
-public interface LineDao {
-
-    static LineDao getInstance(){
-        return new LineDaoImpl();
-    }
+public interface LineDao extends JpaRepository<Line, Long>{
 
     Line findById(int id);
 
-    Line findByAgencyAndName(String agency, String name);
+    Line findByAgencyNameAndName(String agency, String name);
 
-    List<Line> findByAgency(String agency);
+    List<Line> findByAgencyName(String agencyName);
 
     List<Line> findByName(String name);
 
     List<Line> findByType(VehicleType type);
 
-    void saveLine(Line platform);
-
-    List<Line> findAllLines();
-    
 }

@@ -1,41 +1,47 @@
-
 package pl.rosiakit.bo;
 
+import org.springframework.stereotype.Component;
 import pl.rosiakit.dao.DepartureDao;
 import pl.rosiakit.model.Departure;
 import pl.rosiakit.model.Line;
 import pl.rosiakit.model.Platform;
 
+import javax.transaction.Transactional;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
+ * @date 2016-09-19
  */
-class DepartureBoImpl implements DepartureBo {
+@Component("departureBo")
+@Transactional
+public class DepartureBoImpl implements DepartureBo {
 
-    private final DepartureDao dao = DepartureDao.getInstance();
+    private final DepartureDao departureDao;
 
-    @Override
-    public List<Departure> findLineDeparturesAfter(Platform platform, int dayType, Line line, LocalTime time){
-        return dao.findLineDeparturesAfter(platform, dayType, line, time);
+    public DepartureBoImpl(DepartureDao departureDao) {
+        this.departureDao = departureDao;
     }
 
     @Override
-    public void saveDeparture(Departure departure){
-        dao.saveDeparture(departure);
+    public List<Departure> findLineDeparturesAfter(Platform platform, int dayType, Line line, LocalTime time) {
+        return departureDao.findLineDeparturesAfter(platform, dayType, line, time);
+    }
+
+    @Override
+    public void saveDeparture(Departure departure) {
+        departureDao.save(departure);
     }
 
     @Override
     public void saveAll(LinkedList<Departure> departures) {
-        dao.saveAll(departures);
-    }
-    
-    @Override
-    public void deleteDeparture(Departure departure){
-        dao.deleteDeparture(departure);
+        departureDao.save(departures);
     }
 
+    @Override
+    public void deleteDeparture(Departure departure) {
+        departureDao.delete(departure);
+    }
 }

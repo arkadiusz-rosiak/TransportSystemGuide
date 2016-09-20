@@ -1,4 +1,3 @@
-
 package pl.rosiakit.bo;
 
 import pl.rosiakit.model.Line;
@@ -9,14 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
+ * @date 2016-09-19
  */
 public interface RouteBo {
-
-    static RouteBo getInstance(){
-        return new RouteBoImpl();
-    }
 
     Map<Integer, List<Route>> findLineRoutesSplitByDirection(Line line);
 
@@ -25,9 +20,9 @@ public interface RouteBo {
     void saveLineRoute(Route route);
 
     void saveAllLineRoutes(LinkedList<Route> routes);
-    
+
     void delete(Route route);
-    
+
     void deleteLineRoutes(Line line);
-    
+
 }

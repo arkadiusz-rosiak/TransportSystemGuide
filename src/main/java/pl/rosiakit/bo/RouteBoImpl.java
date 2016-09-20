@@ -1,19 +1,27 @@
-
 package pl.rosiakit.bo;
 
+import org.springframework.stereotype.Component;
 import pl.rosiakit.dao.RouteDao;
 import pl.rosiakit.model.Line;
 import pl.rosiakit.model.Route;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 /**
- *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
+ * @date 2016-09-19
  */
-class RouteBoImpl implements RouteBo{
 
-    private final RouteDao dao = RouteDao.getInstance();
+@Component("routeBo")
+@Transactional
+public class RouteBoImpl implements RouteBo {
+
+    private final RouteDao routeDao;
+
+    public RouteBoImpl(RouteDao routeDao) {
+        this.routeDao = routeDao;
+    }
 
     @Override
     public Map<Integer, List<Route>> findLineRoutesSplitByDirection(Line line) {
@@ -27,7 +35,7 @@ class RouteBoImpl implements RouteBo{
                 route = routesWithDirection.get(part.getDirection());
             }
             else{
-                 route = new ArrayList<>();
+                route = new ArrayList<>();
             }
 
             route.add(part);
@@ -38,27 +46,27 @@ class RouteBoImpl implements RouteBo{
     }
 
     @Override
-    public List<Route> findLineRoutes(Line line){
-        return dao.findLineRoutes(line);
+    public List<Route> findLineRoutes(Line line) {
+        return routeDao.findLineRoutes(line);
     }
-    
+
     @Override
-    public void saveLineRoute(Route route){
-        dao.save(route);
+    public void saveLineRoute(Route route) {
+        routeDao.save(route);
     }
 
     @Override
     public void saveAllLineRoutes(LinkedList<Route> routes) {
-        dao.saveAll(routes);
+        routeDao.save(routes);
     }
-    
+
     @Override
-    public void delete(Route route){
-        dao.delete(route);
-    }    
-    
+    public void delete(Route route) {
+        routeDao.delete(route);
+    }
+
     @Override
-    public void deleteLineRoutes(Line line){
-        dao.deleteLineRoutes(line);
+    public void deleteLineRoutes(Line line) {
+        routeDao.deleteLineRoutes(line);
     }
 }

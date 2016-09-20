@@ -1,6 +1,8 @@
 
 package pl.rosiakit.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -17,20 +19,31 @@ import java.util.Set;
 public class Platform implements Serializable{
           
     @Id
+    @JsonView(JsonViewsContainer.StopsDetails.class)
     private String id;
 
     @Column
+    @JsonView(JsonViewsContainer.StopsDetails.class)
     private String name;
 
     @Column
+    @JsonView(JsonViewsContainer.StopsDetails.class)
     private float lat;
 
     @Column
+    @JsonView(JsonViewsContainer.StopsDetails.class)
     private float lng;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="stop")
     private Stop stop;
+
+    /**
+     * This field is using when nearest stops are returned and is containing distance from source
+     */
+    @Transient
+    @JsonView(JsonViewsContainer.StopsWithDistances.class)
+    private int distance = Integer.MAX_VALUE;
         
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "platform",
             cascade = CascadeType.ALL, orphanRemoval = true)
@@ -70,6 +83,14 @@ public class Platform implements Serializable{
 
     public Stop getStop() {
         return stop;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     public void setStop(Stop stop) {

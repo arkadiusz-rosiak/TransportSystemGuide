@@ -1,4 +1,3 @@
-
 package pl.rosiakit.bo;
 
 import pl.rosiakit.model.Departure;
@@ -10,21 +9,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
+ * @date 2016-09-19
  */
 public interface DepartureBo {
-
-    static DepartureBo getInstance(){
-        return new DepartureBoImpl();
-    }
 
     List<Departure> findLineDeparturesAfter(Platform platform, int dayType, Line line, LocalTime time);
 
     void saveDeparture(Departure departure);
-    
+
     void saveAll(LinkedList<Departure> departures);
-    
+
     void deleteDeparture(Departure departure);
-    
+
 }

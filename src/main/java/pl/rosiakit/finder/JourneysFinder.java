@@ -2,6 +2,7 @@ package pl.rosiakit.finder;
 
 import org.jgrapht.graph.ClassBasedEdgeFactory;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+import pl.rosiakit.bo.DepartureBo;
 import pl.rosiakit.bo.LineBo;
 import pl.rosiakit.bo.RouteBo;
 import pl.rosiakit.graph.PlatformsEdge;
@@ -27,13 +28,25 @@ public class JourneysFinder {
 
     private LocalTime departureTime = LocalTime.now();
 
-    static {
+    private static LineBo lineBo;
+
+    private static RouteBo routeBo;
+
+    public static void prepareData(LineBo lineBo, RouteBo routeBo, DepartureBo departureBo){
+        JourneyFactory.setDepartureBo(departureBo);
+
+        JourneysFinder.lineBo = lineBo;
+        JourneysFinder.routeBo = routeBo;
+
+        refreshData();
+    }
+
+    public static void refreshData(){
         getLinesFromDB();
         getRoutesFromDB();
     }
 
     private static void getLinesFromDB(){
-        LineBo lineBo = LineBo.getInstance();
         List<Line> lines = lineBo.findAllLines();
         for(Line line : lines){
             LineEntry entry = new LineEntry(line);
@@ -42,8 +55,6 @@ public class JourneysFinder {
     }
 
     private static void getRoutesFromDB(){
-        RouteBo routeBo = RouteBo.getInstance();
-
         for(Line line : lines.keySet()){
             LineEntry entry = lines.get(line);
 

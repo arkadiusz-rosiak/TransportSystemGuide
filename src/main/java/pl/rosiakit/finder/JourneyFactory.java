@@ -21,11 +21,19 @@ class JourneyFactory {
 
     private Set<JourneyPattern> foundPatterns = new HashSet<>();
 
-    private static DepartureBo departureBo = DepartureBo.getInstance();
+    private static DepartureBo departureBo;
 
     private int minTransfers = Integer.MAX_VALUE;
 
-    private JourneyFactory(){ }
+    private JourneyFactory(){
+        if(departureBo == null){
+            throw new NullPointerException("You must set DepartureBo before using JourneyFactory");
+        }
+    }
+
+    public static void setDepartureBo(DepartureBo departureBo){
+        JourneyFactory.departureBo = departureBo;
+    }
 
     static Journey createNextJourneyAfter(Journey journey){
         LocalTime journeyDeparture = journey.getDepartureTime();

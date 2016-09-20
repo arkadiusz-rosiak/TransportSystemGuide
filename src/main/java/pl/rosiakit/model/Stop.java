@@ -1,6 +1,8 @@
 
 package pl.rosiakit.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -17,13 +19,16 @@ public class Stop implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViewsContainer.StopsSummary.class)
     private int id;
     
     @Column(nullable = false)
+    @JsonView(JsonViewsContainer.StopsSummary.class)
     private String name;
     
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "stop",
             cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView(JsonViewsContainer.StopsDetails.class)
     private Set<Platform> platforms = new HashSet<>();
     
     @Column

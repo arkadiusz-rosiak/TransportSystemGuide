@@ -1,6 +1,8 @@
 
 package pl.rosiakit.finder;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import pl.rosiakit.model.JsonViewsContainer;
 import pl.rosiakit.model.Line;
 import pl.rosiakit.model.Platform;
 import pl.rosiakit.model.Stop;
@@ -24,9 +26,16 @@ enum STEP_TYPE{
 
 public class JourneyStep {
 
+    @JsonView(JsonViewsContainer.JourneyView.class)
     private final STEP_TYPE type;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
     private final Line line;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
     private final LocalTime time;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
     private final Platform platform;
 
     JourneyStep(STEP_TYPE type, Line line, LocalTime time, Platform platform) {

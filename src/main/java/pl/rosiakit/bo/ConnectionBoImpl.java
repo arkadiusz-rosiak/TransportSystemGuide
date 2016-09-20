@@ -1,31 +1,37 @@
-
 package pl.rosiakit.bo;
 
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.rosiakit.dao.ConnectionDao;
 import pl.rosiakit.model.Connection;
 import pl.rosiakit.model.Platform;
 
 /**
- *
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
+ * @date 2016-09-19
  */
-class ConnectionBoImpl implements ConnectionBo{
+@Component("connectionBo")
+@Transactional
+public class ConnectionBoImpl implements ConnectionBo {
 
-    private final ConnectionDao dao = ConnectionDao.getInstance();
+    private final ConnectionDao connectionDao;
 
-    @Override
-    public Connection findConnectionBySourceTarget(Platform source, Platform target){
-        return dao.findBySourceTarget(source, target);
+    public ConnectionBoImpl(ConnectionDao connectionDao) {
+        this.connectionDao = connectionDao;
     }
 
     @Override
-    public void saveConnection(Connection connection){
-        dao.save(connection);
+    public Connection findConnectionBySourceTarget(Platform source, Platform target) {
+        return connectionDao.findBySourceTarget(source, target);
     }
-    
+
     @Override
-    public void deleteConnection(Connection connection){
-        dao.delete(connection);
+    public void saveConnection(Connection connection) {
+        connectionDao.save(connection);
     }
-    
+
+    @Override
+    public void deleteConnection(Connection connection) {
+        connectionDao.delete(connection);
+    }
 }

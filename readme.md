@@ -26,7 +26,7 @@ returns details about selected stop [Live example](http://api-rosiakit.rhcloud.c
 returns all stops in area of 1 kilometer sorted by distance ascending. [Live example](http://api-rosiakit.rhcloud.com/v1/stops/nearest/52.4653/16.9170)
 
 ##### /v1/journey/{stop_id_1}/{stop_id_2}
-returns all journeys between {stop_id_1} and {stop_id_2}. Please notice that parameters are stop ids **not names**. [Live example](api-rosiakit.rhcloud.com/v1/journey/67/107?&h=10&m=30)
+returns all journeys between {stop_id_1} and {stop_id_2}. Please notice that parameters are stop ids **not names**. [Live example](http://api-rosiakit.rhcloud.com/v1/journey/67/107?&h=10&m=30)
 
 This endpoint takes following request params:
 * `h` - Hour of departure (must be combined with "m" param)

@@ -1,5 +1,6 @@
 package pl.rosiakit.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import pl.rosiakit.finder.JourneysFinder;
  */
 
 @RestController
+@CrossOrigin(origins = "*")
 public class SchedulesController {
 
     @RequestMapping("/v1/schedules/update")

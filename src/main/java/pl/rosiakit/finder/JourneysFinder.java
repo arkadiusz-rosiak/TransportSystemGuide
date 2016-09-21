@@ -32,6 +32,10 @@ public class JourneysFinder {
 
     private static RouteBo routeBo;
 
+    private Stop source;
+
+    private Stop target;
+
     public static void prepareData(LineBo lineBo, RouteBo routeBo, DepartureBo departureBo){
         JourneyFactory.setDepartureBo(departureBo);
 
@@ -71,19 +75,24 @@ public class JourneysFinder {
         this.departureTime = time;
     }
 
-    public Set<Journey> findJourneys(Stop from, Stop to) {
+    public List<Journey> findJourneys(Stop from, Stop to) {
 
         if(from == null || to == null || from.equals(to)){
-            throw new IllegalArgumentException("Wybrane przystanki nie są poprawne!");
+            throw new IllegalArgumentException("Source stop and target must not be null nor equals!");
         }
 
+        this.source = from;
+        this.target = to;
+
         Set<List<Stop>> travelPoints = this.findTravelPoints(from, to);
-        Set<JourneyPattern> travelPatterns = this.generateJourneyPatternsViaPoints(travelPoints);
+        Set<JourneyPattern> travelPatterns = this.generateJourneyPatternsViaPoints(from, to, travelPoints);
 
-        System.out.println(travelPoints);
+        Set<Journey> journeysFound = this.generateJourneys(travelPatterns);
 
-        return this.generateJourneys(travelPatterns);
+        List<Journey> sortedJourneys = journeysFound.stream().filter(journey -> journey != null).collect(Collectors.toList());
+        Collections.sort(sortedJourneys);
 
+        return sortedJourneys;
     }
 
     private Set<Journey> generateJourneys(Set<JourneyPattern> travelPatterns){
@@ -93,20 +102,19 @@ public class JourneysFinder {
                 .collect(Collectors.toSet());
     }
 
-    private Set<JourneyPattern> generateJourneyPatternsViaPoints(Set<List<Stop>> travelPoints){
+    private Set<JourneyPattern> generateJourneyPatternsViaPoints(Stop source, Stop target, Set<List<Stop>> travelPoints){
 
         Set<JourneyPattern> patternsFound = new HashSet<>();
-        Set<JourneyPattern> filteredPatterns = new HashSet<>();
 
         for(List<Stop> oneTravelPoints : travelPoints){
-            patternsFound.addAll(JourneyFactory.preparePatternsViaPoints(oneTravelPoints));
+            patternsFound.addAll(JourneyFactory.preparePatternsViaPoints(source, target, oneTravelPoints));
         }
 
         int minEdgesCount = findMinimumEdgesCount(patternsFound);
         Set<JourneyPattern> minEdgesPatterns = patternsWithEdgesCountLowerThan(minEdgesCount, patternsFound);
 
         int minTransfersFound = findMinimumTransferCount(minEdgesPatterns);
-        filteredPatterns = patternsWithTransferCountLowerThan(minTransfersFound, minEdgesPatterns);
+        Set<JourneyPattern> filteredPatterns = patternsWithTransferCountLowerThan(minTransfersFound, minEdgesPatterns);
 
         for(JourneyPattern pattern : patternsFound){
             if(pattern.getTransfers() == 0){
@@ -184,16 +192,7 @@ public class JourneysFinder {
 
         SimpleDirectedWeightedGraph<Stop, StopsEdge> graph = createGraphBasedOnRoutes(routes);
 
-        long startTime = System.nanoTime();
-
-        Set<List<Stop>> points = PathsFinder.findTravelPoints(graph, from, to);
-
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);
-
-        System.out.println("Travel points found in "+duration/1000000.0 + "mS");
-
-        return points;
+        return PathsFinder.findTravelPoints(graph, from, to);
     }
 
     private SimpleDirectedWeightedGraph<Stop, StopsEdge> createGraphBasedOnRoutes(

@@ -25,14 +25,26 @@ class JourneyFactory {
 
     private int minTransfers = Integer.MAX_VALUE;
 
+    private Stop source;
+
+    private Stop target;
+
     private JourneyFactory(){
         if(departureBo == null){
             throw new NullPointerException("You must set DepartureBo before using JourneyFactory");
         }
     }
 
-    public static void setDepartureBo(DepartureBo departureBo){
+    static void setDepartureBo(DepartureBo departureBo){
         JourneyFactory.departureBo = departureBo;
+    }
+
+    public void setSource(Stop source) {
+        this.source = source;
+    }
+
+    public void setTarget(Stop target) {
+        this.target = target;
     }
 
     static Journey createNextJourneyAfter(Journey journey){
@@ -96,28 +108,49 @@ class JourneyFactory {
         return new Journey(pattern, departureTimes);
     }
 
-    static Set<JourneyPattern> preparePatternsViaPoints(List<Stop> travelPoints){
+    static Set<JourneyPattern> preparePatternsViaPoints(Stop source, Stop target, List<Stop> travelPoints){
         JourneyFactory jf = new JourneyFactory();
+        jf.setSource(source);
+        jf.setTarget(target);
         jf.generatePatternsViaPoints(travelPoints);
         return jf.getFoundPatterns();
     }
-
 
     private Set<JourneyPattern> getFoundPatterns(){
         return new HashSet<>(foundPatterns);
     }
 
     private void generatePatternsViaPoints(List<Stop> travelPoints){
-
-        Stop source = travelPoints.get(0);
-        Stop target = travelPoints.get(travelPoints.size()-1);
-
         this.tryToFindNonStopJourney(source, target);
         this.findCombinedPatterns(travelPoints);
+        this.retainOnlyCorrectPatterns();
+    }
+
+    private void retainOnlyCorrectPatterns(){
+        Set<JourneyPattern> correctPatterns = this.foundPatterns.stream().filter(this::isCorrectPattern)
+                .collect(Collectors.toSet());
+
+        foundPatterns.retainAll(correctPatterns);
+    }
+
+    private boolean isCorrectPattern(JourneyPattern pattern){
+        return isLengthMoreThanZero(pattern) && hasStartInSource(pattern) && hasEndInTarget(pattern);
+    }
+
+    private boolean isLengthMoreThanZero(JourneyPattern pattern){
+        return pattern.getPath().size() > 0;
+    }
+
+    private boolean hasStartInSource(JourneyPattern pattern){
+        return pattern.getPath().get(0).getSource().getStop().equals(source);
+    }
+
+    private boolean hasEndInTarget(JourneyPattern pattern){
+        int lastIndex = pattern.getPath().size()-1;
+        return pattern.getPath().get(lastIndex).getTarget().getStop().equals(target);
     }
 
     private void tryToFindNonStopJourney(Stop source, Stop target){
-
         Set<Line> commonLines = JourneysFinder.getCommonLines(source, target);
 
         for(Line line : commonLines){
@@ -136,6 +169,8 @@ class JourneyFactory {
     }
 
     private void findCombinedPatterns(List<Stop> travelPoints){
+        travelPoints.add(0, this.source);
+        travelPoints.add(this.target);
         patternParts = generatePatternParts(travelPoints);
 
         for(int option = 0; option < patternParts.get(0).size(); ++option){
@@ -150,13 +185,11 @@ class JourneyFactory {
         partsFollowed.add(thisPartFamily.get(option));
 
         if(part + 1 < patternParts.size()){
-
             List<JourneyPatternPart> nextPartFamily = patternParts.get(part+1);
 
             for(int i=0; i < nextPartFamily.size(); ++i){
                 visit(part+1, i, new ArrayList<>(partsFollowed));
             }
-
         }
 
         if(part == patternParts.size()-1){
@@ -166,7 +199,6 @@ class JourneyFactory {
                 minTransfers = jp.getTransfers();
             }
         }
-
     }
 
     private List<List<JourneyPatternPart>> generatePatternParts(List<Stop> travelPoints){

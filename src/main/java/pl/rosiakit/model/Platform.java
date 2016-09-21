@@ -19,23 +19,24 @@ import java.util.Set;
 public class Platform implements Serializable{
           
     @Id
-    @JsonView(JsonViewsContainer.StopsDetails.class)
+    @JsonView(JsonViewsContainer.PlatformsSummary.class)
     private String id;
 
     @Column
-    @JsonView(JsonViewsContainer.StopsDetails.class)
+    @JsonView(JsonViewsContainer.PlatformsSummary.class)
     private String name;
 
     @Column
-    @JsonView(JsonViewsContainer.StopsDetails.class)
+    @JsonView(JsonViewsContainer.PlatformsSummary.class)
     private float lat;
 
     @Column
-    @JsonView(JsonViewsContainer.StopsDetails.class)
+    @JsonView(JsonViewsContainer.PlatformsSummary.class)
     private float lng;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="stop")
+    @JsonView(JsonViewsContainer.JourneyView.class)
     private Stop stop;
 
     /**

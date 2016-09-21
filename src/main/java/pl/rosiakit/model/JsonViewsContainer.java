@@ -12,9 +12,11 @@ public class JsonViewsContainer {
 
     public interface StopsSummary extends ResponseView{}
 
-    public interface StopsDetails extends StopsSummary{}
+    public interface PlatformsSummary extends ResponseView{}
+
+    public interface StopsDetails extends StopsSummary, PlatformsSummary{}
 
     public interface StopsWithDistances extends StopsDetails{}
 
-    public interface JourneyView extends StopsDetails, LinesSummary{}
+    public interface JourneyView extends StopsSummary, PlatformsSummary, LinesSummary{}
 }

@@ -2,10 +2,7 @@ package pl.rosiakit.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.rosiakit.bo.PlatformBo;
 import pl.rosiakit.bo.StopBo;
 import pl.rosiakit.model.JsonResponse;
@@ -23,6 +20,7 @@ import java.util.List;
  */
 
 @RestController
+@CrossOrigin(origins = "*")
 public class StopController {
 
     private StopBo stopBo;
@@ -38,7 +36,7 @@ public class StopController {
     }
 
     @RequestMapping("/v1/stops")
-    @JsonView(JsonViewsContainer.StopsSummary.class)
+    @JsonView(JsonViewsContainer.StopsDetails.class)
     public JsonResponse findStopsByName(@RequestParam(value="name", required = false) String name) {
         if(name != null){
             return new JsonResponse(200, stopBo.findStopsByName(name));

@@ -16,6 +16,8 @@ public interface StopBo {
 
     List<Stop> findStopsByName(String name);
 
+    List<Stop> findStopsContainingName(String name);
+
     void saveStop(Stop stop);
 
     void deleteStop(Stop stop);

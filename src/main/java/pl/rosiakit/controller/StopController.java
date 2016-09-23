@@ -37,9 +37,13 @@ public class StopController {
 
     @RequestMapping("/v1/stops")
     @JsonView(JsonViewsContainer.StopsDetails.class)
-    public JsonResponse findStopsByName(@RequestParam(value="name", required = false) String name) {
+    public JsonResponse findStopsByName(@RequestParam(value="name", required = false) String name,
+                                        @RequestParam(value="containing", required = false) String containing) {
         if(name != null){
             return new JsonResponse(200, stopBo.findStopsByName(name));
+        }
+        else if(containing != null){
+            return new JsonResponse(200, stopBo.findStopsContainingName(containing));
         }
         else{
             return new JsonResponse(200, stopBo.findAllStops());

@@ -16,8 +16,9 @@ Live preview contains data about Poznań (data gathered by ZTMPoznanCrawler) and
 ##### /v1/stops
 returns all stops stored in database. [Live example](http://api-rosiakit.rhcloud.com/v1/stops)
 
-##### /v1/stops?name={name}
-returns all stops that name starts with provided value. [Live example](http://api-rosiakit.rhcloud.com/v1/stops?name=Dworzec)
+This endpoint takes following request params:
+* `name` - returns all stops that name starts with provided value. [Live example](http://api-rosiakit.rhcloud.com/v1/stops?name=Dworzec)
+* `containing` - returns all stops containing provided value. Note: `containing` is ignored when `name` is set. 
 
 ##### /v1/stops/{id}
 returns details about selected stop [Live example](http://api-rosiakit.rhcloud.com/v1/stops/1)

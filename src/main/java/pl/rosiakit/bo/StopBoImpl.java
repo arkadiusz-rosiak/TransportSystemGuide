@@ -42,6 +42,12 @@ public class StopBoImpl implements StopBo {
     }
 
     @Override
+    public List<Stop> findStopsContainingName(String name) {
+        Assert.notNull(name, "Name must not be null");
+        return stopDao.findByNameContainingOrderByNameAsc(name);
+    }
+
+    @Override
     public void saveStop(Stop stop) {
         Assert.notNull(stop, "Stop must not be null");
         stopDao.save(stop);

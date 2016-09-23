@@ -17,6 +17,8 @@ public interface StopDao extends JpaRepository<Stop, Long> {
 
     List<Stop> findByNameStartingWithOrderByNameAsc(String name);
 
+    List<Stop> findByNameContainingOrderByNameAsc(String name);
+
     List<Stop> findByOrderByNameAsc();
 
 }

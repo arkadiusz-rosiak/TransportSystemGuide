@@ -2,10 +2,7 @@ package pl.rosiakit.finder;
 
 import pl.rosiakit.bo.DepartureBo;
 import pl.rosiakit.graph.PlatformsEdge;
-import pl.rosiakit.model.Departure;
-import pl.rosiakit.model.Line;
-import pl.rosiakit.model.Platform;
-import pl.rosiakit.model.Stop;
+import pl.rosiakit.model.*;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -52,10 +49,10 @@ class JourneyFactory {
         journeyDeparture = journeyDeparture.plusMinutes(1);
 
         JourneyPattern pattern = journey.getPattern();
-        return createJourneyBasedOn(pattern, journeyDeparture);
+        return createJourneyBasedOn(pattern, journeyDeparture, journey.getDaytype());
     }
 
-    static Journey createJourneyBasedOn(JourneyPattern pattern, LocalTime departureTime){
+    static Journey createJourneyBasedOn(JourneyPattern pattern, LocalTime departureTime, DayType daytype){
 
         List<LocalTime> departureTimes = new ArrayList<>();
         LocalTime prevDeparture = departureTime;
@@ -90,7 +87,8 @@ class JourneyFactory {
                     prevDeparture = prevDeparture.plusMinutes(2);
                 }
 
-                List<Departure> departures = departureBo.findLineDeparturesAfter(platform, 8, line, prevDeparture);
+                List<Departure> departures
+                        = departureBo.findLineDeparturesAfter(platform, daytype.getValue(), line, prevDeparture);
 
                 if(!departures.isEmpty()) {
                     prevDeparture = departures.get(0).getDepartureTime();
@@ -105,7 +103,7 @@ class JourneyFactory {
             prevEdge = edge;
         }
 
-        return new Journey(pattern, departureTimes);
+        return new Journey(pattern, departureTimes, daytype);
     }
 
     static Set<JourneyPattern> preparePatternsViaPoints(Stop source, Stop target, List<Stop> travelPoints){

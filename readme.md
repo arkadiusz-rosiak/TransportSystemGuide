@@ -31,5 +31,5 @@ returns all journeys between {stop_id_1} and {stop_id_2}. Please notice that par
 This endpoint takes following request params:
 * `h` - Hour of departure (must be combined with "m" param)
 * `m` - Minutes of departure (must be combined with "h" param) 
-
+* `daytype` - Possible values: `weekday`, `saturday`, `holiday`
 

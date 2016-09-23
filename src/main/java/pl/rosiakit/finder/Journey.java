@@ -2,6 +2,7 @@ package pl.rosiakit.finder;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import pl.rosiakit.graph.PlatformsEdge;
+import pl.rosiakit.model.DayType;
 import pl.rosiakit.model.JsonViewsContainer;
 import pl.rosiakit.model.Line;
 import pl.rosiakit.model.Platform;
@@ -40,12 +41,16 @@ public class Journey implements Comparable{
     private int comfortIndex;
 
     @JsonView(JsonViewsContainer.JourneyView.class)
+    private DayType daytype;
+
+    @JsonView(JsonViewsContainer.JourneyView.class)
     private List<JourneyStep> steps = new ArrayList<>();
 
     private final JourneyPattern pattern;
 
-    Journey(JourneyPattern pattern, List<LocalTime> departures){
+    Journey(JourneyPattern pattern, List<LocalTime> departures, DayType daytype){
         if(pattern.getLines().size() == departures.size()){
+            this.daytype = daytype;
             this.pattern = pattern;
             this.departures.addAll(departures);
             this.splitJourneyIntoSteps();
@@ -130,6 +135,9 @@ public class Journey implements Comparable{
         }
     }
 
+    public DayType getDaytype() {
+        return daytype;
+    }
 
     public List<JourneyStep> getSteps(){
         return this.steps;

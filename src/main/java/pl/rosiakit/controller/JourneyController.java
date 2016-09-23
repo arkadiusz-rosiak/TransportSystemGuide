@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.rosiakit.bo.StopBo;
 import pl.rosiakit.finder.Journey;
 import pl.rosiakit.finder.JourneysFinder;
+import pl.rosiakit.model.DayType;
 import pl.rosiakit.model.JsonResponse;
 import pl.rosiakit.model.JsonViewsContainer;
 import pl.rosiakit.model.Stop;
@@ -33,7 +34,8 @@ public class JourneyController {
     @JsonView(JsonViewsContainer.JourneyView.class)
     public JsonResponse findJourneys(@PathVariable int source, @PathVariable int target,
                                      @RequestParam(value="h", required = false) String hour,
-                                     @RequestParam(value="m", required = false) String minutes) {
+                                     @RequestParam(value="m", required = false) String minutes,
+                                     @RequestParam(value="daytype", required = false) String daytype) {
 
         JourneysFinder finder = new JourneysFinder();
 
@@ -41,10 +43,11 @@ public class JourneyController {
         Stop targetStop = stopBo.findStopById(target);
 
         if(sourceStop == null || targetStop == null || sourceStop.equals(targetStop)){
-            return new JsonResponse(500, "Podane przystanki nie są prawidłowe");
+            return new JsonResponse(400, "Podane przystanki nie są prawidłowe");
         }
 
-        finder.setDepartureTime(this.getDepartureTimeFromRequestParam(hour, minutes));
+        finder.setDepartureTime(getDepartureTimeFromRequestParam(hour, minutes));
+        finder.setDaytype(getDaytypeFromRequestParam(daytype));
 
         List<Journey> journeysFound = finder.findJourneys(sourceStop, targetStop);
 
@@ -54,6 +57,27 @@ public class JourneyController {
         else{
             return new JsonResponse(404, "Droga nie zostala odnaleziona");
         }
+    }
+
+    private DayType getDaytypeFromRequestParam(String daytype){
+
+        if(daytype == null){
+            return DayType.WEEKDAY;
+        }
+
+        if(daytype.toLowerCase().equals("weekday")){
+            return DayType.WEEKDAY;
+        }
+
+        if(daytype.toLowerCase().equals("saturday")){
+            return DayType.SATURDAY;
+        }
+
+        if(daytype.toLowerCase().equals("holiday")){
+            return DayType.HOLIDAY;
+        }
+
+        return DayType.WEEKDAY;
     }
 
     private LocalTime getDepartureTimeFromRequestParam(String hour, String minutes){

@@ -27,7 +27,7 @@ public class CustomErrorController implements ErrorController {
 
     @RequestMapping(value = PATH)
     JsonResponse error(HttpServletRequest request, HttpServletResponse response) {
-        return new JsonResponse(response.getStatus(), getErrorAttributes(request, false).get("message"));
+        return new JsonResponse(response.getStatus(), getErrorAttributes(request, false).get("error"));
     }
 
     @Override

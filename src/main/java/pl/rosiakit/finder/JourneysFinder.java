@@ -7,10 +7,7 @@ import pl.rosiakit.bo.LineBo;
 import pl.rosiakit.bo.RouteBo;
 import pl.rosiakit.graph.PlatformsEdge;
 import pl.rosiakit.graph.StopsEdge;
-import pl.rosiakit.model.Line;
-import pl.rosiakit.model.Platform;
-import pl.rosiakit.model.Route;
-import pl.rosiakit.model.Stop;
+import pl.rosiakit.model.*;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -28,13 +25,11 @@ public class JourneysFinder {
 
     private LocalTime departureTime = LocalTime.now();
 
+    private DayType daytype = DayType.WEEKDAY;
+
     private static LineBo lineBo;
 
     private static RouteBo routeBo;
-
-    private Stop source;
-
-    private Stop target;
 
     public static void prepareData(LineBo lineBo, RouteBo routeBo, DepartureBo departureBo){
         JourneyFactory.setDepartureBo(departureBo);
@@ -71,6 +66,10 @@ public class JourneysFinder {
         }
     }
 
+    public void setDaytype(DayType daytype) {
+        this.daytype = daytype;
+    }
+
     public void setDepartureTime(LocalTime time){
         this.departureTime = time;
     }
@@ -80,9 +79,6 @@ public class JourneysFinder {
         if(from == null || to == null || from.equals(to)){
             throw new IllegalArgumentException("Source stop and target must not be null nor equals!");
         }
-
-        this.source = from;
-        this.target = to;
 
         Set<List<Stop>> travelPoints = this.findTravelPoints(from, to);
         Set<JourneyPattern> travelPatterns = this.generateJourneyPatternsViaPoints(from, to, travelPoints);
@@ -98,7 +94,7 @@ public class JourneysFinder {
     private Set<Journey> generateJourneys(Set<JourneyPattern> travelPatterns){
 
         return travelPatterns.stream().filter(pattern -> pattern.getPath().size() > 0)
-                .map(pattern -> JourneyFactory.createJourneyBasedOn(pattern, departureTime))
+                .map(pattern -> JourneyFactory.createJourneyBasedOn(pattern, departureTime, daytype))
                 .collect(Collectors.toSet());
     }
 

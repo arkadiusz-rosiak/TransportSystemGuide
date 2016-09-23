@@ -27,6 +27,8 @@ public class JourneysFinder {
 
     private DayType daytype = DayType.WEEKDAY;
 
+    private Set<Line> blacklist = new HashSet<>();
+
     private static LineBo lineBo;
 
     private static RouteBo routeBo;
@@ -70,6 +72,10 @@ public class JourneysFinder {
         this.daytype = daytype;
     }
 
+    public void setBlacklist(Set<Line> lines){
+        this.blacklist = lines;
+    }
+
     public void setDepartureTime(LocalTime time){
         this.departureTime = time;
     }
@@ -103,7 +109,7 @@ public class JourneysFinder {
         Set<JourneyPattern> patternsFound = new HashSet<>();
 
         for(List<Stop> oneTravelPoints : travelPoints){
-            patternsFound.addAll(JourneyFactory.preparePatternsViaPoints(source, target, oneTravelPoints));
+            patternsFound.addAll(JourneyFactory.preparePatternsViaPoints(source, target, oneTravelPoints, blacklist));
         }
 
         int minEdgesCount = findMinimumEdgesCount(patternsFound);
@@ -183,7 +189,10 @@ public class JourneysFinder {
 
     private Set<List<Stop>> findTravelPoints(Stop from, Stop to){
 
-        Set<LineEntry> lineEntries = new HashSet<>(lines.values());
+        Set<LineEntry> lineEntries = lines.values().stream()
+                .filter(lineEntry -> !blacklist.contains(lineEntry.getLine()))
+                .collect(Collectors.toSet());
+
         Set<SimpleDirectedWeightedGraph<Platform, PlatformsEdge>> routes = getRouteGraphsFromLineEntries(lineEntries);
 
         SimpleDirectedWeightedGraph<Stop, StopsEdge> graph = createGraphBasedOnRoutes(routes);

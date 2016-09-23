@@ -32,4 +32,5 @@ This endpoint takes following request params:
 * `h` - Hour of departure (must be combined with "m" param)
 * `m` - Minutes of departure (must be combined with "h" param) 
 * `daytype` - Possible values: `weekday`, `saturday`, `holiday`
+* `avoid` - Lines that should be ignored. Value pattern is: `{agency_name}:{line_name}` for example: `ZTM_MPK:14`
 

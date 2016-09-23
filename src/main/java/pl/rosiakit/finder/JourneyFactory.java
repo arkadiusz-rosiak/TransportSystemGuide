@@ -26,10 +26,14 @@ class JourneyFactory {
 
     private Stop target;
 
-    private JourneyFactory(){
+    private Set<Line> blacklist;
+
+    private JourneyFactory(Set<Line> blacklist){
         if(departureBo == null){
             throw new NullPointerException("You must set DepartureBo before using JourneyFactory");
         }
+
+        this.blacklist = blacklist;
     }
 
     static void setDepartureBo(DepartureBo departureBo){
@@ -106,8 +110,9 @@ class JourneyFactory {
         return new Journey(pattern, departureTimes, daytype);
     }
 
-    static Set<JourneyPattern> preparePatternsViaPoints(Stop source, Stop target, List<Stop> travelPoints){
-        JourneyFactory jf = new JourneyFactory();
+    static Set<JourneyPattern> preparePatternsViaPoints(Stop source, Stop target,
+                                                        List<Stop> travelPoints, Set<Line> blacklist){
+        JourneyFactory jf = new JourneyFactory(blacklist);
         jf.setSource(source);
         jf.setTarget(target);
         jf.generatePatternsViaPoints(travelPoints);
@@ -151,10 +156,10 @@ class JourneyFactory {
     private void tryToFindNonStopJourney(Stop source, Stop target){
         Set<Line> commonLines = JourneysFinder.getCommonLines(source, target);
 
+        commonLines.removeAll(blacklist);
+
         for(Line line : commonLines){
-
             List<PlatformsEdge> path = JourneysFinder.findLinePathBetweenStops(line, source, target);
-
 
             Map<PlatformsEdge, Line> lines = new HashMap<>();
             for(PlatformsEdge edge : path){
@@ -225,6 +230,8 @@ class JourneyFactory {
         Map<List<PlatformsEdge>, Set<Line>> paths = new HashMap<>();
 
         Set<Line> commonLines = JourneysFinder.getCommonLines(source, target);
+
+        commonLines.removeAll(blacklist);
 
         for(Line line : commonLines){
             List<PlatformsEdge> path = JourneysFinder.findLinePathBetweenStops(line, source, target);

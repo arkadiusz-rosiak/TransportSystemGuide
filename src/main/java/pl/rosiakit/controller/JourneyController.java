@@ -2,17 +2,18 @@ package pl.rosiakit.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.*;
+import pl.rosiakit.bo.LineBo;
 import pl.rosiakit.bo.StopBo;
 import pl.rosiakit.finder.Journey;
 import pl.rosiakit.finder.JourneysFinder;
-import pl.rosiakit.model.DayType;
-import pl.rosiakit.model.JsonResponse;
-import pl.rosiakit.model.JsonViewsContainer;
-import pl.rosiakit.model.Stop;
+import pl.rosiakit.model.*;
 
 import javax.inject.Inject;
 import java.time.LocalTime;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
@@ -25,9 +26,12 @@ public class JourneyController {
 
     private final StopBo stopBo;
 
+    private final LineBo lineBo;
+
     @Inject
-    public JourneyController(StopBo stopBo) {
+    public JourneyController(StopBo stopBo, LineBo lineBo) {
         this.stopBo = stopBo;
+        this.lineBo = lineBo;
     }
 
     @RequestMapping("/v1/journey/{source}/{target}")
@@ -35,7 +39,8 @@ public class JourneyController {
     public JsonResponse findJourneys(@PathVariable int source, @PathVariable int target,
                                      @RequestParam(value="h", required = false) String hour,
                                      @RequestParam(value="m", required = false) String minutes,
-                                     @RequestParam(value="daytype", required = false) String daytype) {
+                                     @RequestParam(value="daytype", required = false) String daytype,
+                                     @RequestParam(value="avoid", required = false) String blacklist) {
 
         JourneysFinder finder = new JourneysFinder();
 
@@ -48,6 +53,7 @@ public class JourneyController {
 
         finder.setDepartureTime(getDepartureTimeFromRequestParam(hour, minutes));
         finder.setDaytype(getDaytypeFromRequestParam(daytype));
+        finder.setBlacklist(getBlacklistFromRequestParam(blacklist));
 
         List<Journey> journeysFound = finder.findJourneys(sourceStop, targetStop);
 
@@ -56,6 +62,37 @@ public class JourneyController {
         }
         else{
             return new JsonResponse(404, "Droga nie zostala odnaleziona");
+        }
+    }
+
+    private Set<Line> getBlacklistFromRequestParam(String blacklistParam){
+
+        if(blacklistParam == null){
+            return Collections.emptySet();
+        }
+
+        Set<Line> blacklist = new HashSet<>();
+
+        String[] splitByComma = blacklistParam.split(",");
+
+        for(String lineEntry : splitByComma){
+            Line line = getLineFromBlacklistParam(lineEntry);
+            if(line != null){
+                blacklist.add(line);
+            }
+        }
+
+        return blacklist;
+    }
+
+    private Line getLineFromBlacklistParam(String lineEntry){
+        String[] lineParams = lineEntry.split(":");
+
+        try {
+            return lineBo.findLineByAgencyAndName(lineParams[0], lineParams[1]);
+        }
+        catch(Exception e){
+            return null;
         }
     }
 

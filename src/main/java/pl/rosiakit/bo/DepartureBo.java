@@ -21,6 +21,6 @@ public interface DepartureBo {
 
     void saveAll(LinkedList<Departure> departures);
 
-    void deleteDeparture(Departure departure);
+    void deleteLineDepartures(Line line);
 
 }

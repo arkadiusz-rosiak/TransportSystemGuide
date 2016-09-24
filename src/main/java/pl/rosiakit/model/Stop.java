@@ -31,13 +31,9 @@ public class Stop implements Serializable{
     @JsonView(JsonViewsContainer.StopsDetails.class)
     private Set<Platform> platforms = new HashSet<>();
     
-    @Column
-    @Deprecated
-    private String lat;
-    
-    @Column
-    @Deprecated
-    private String lng;
+    @ManyToOne(optional = false)
+    @JsonView(JsonViewsContainer.StopsDetails.class)
+    private City city;
 
     public Stop() {  }
 
@@ -69,30 +65,12 @@ public class Stop implements Serializable{
         this.platforms.add(platform);
     }
 
-    @Deprecated
-    public String getLat() {
-        for(Platform p : platforms){
-            return p.getLat()+"";
-        }
-        return "0";
+    public City getCity() {
+        return city;
     }
 
-    @Deprecated
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    @Deprecated
-    public String getLng() {
-        for(Platform p : platforms){
-            return p.getLng()+"";
-        }
-        return "0";
-    }
-
-    @Deprecated
-    public void setLng(String lng) {
-        this.lng = lng;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package pl.rosiakit.bo;
 
+import pl.rosiakit.model.City;
 import pl.rosiakit.model.Stop;
 
 import java.util.List;
@@ -12,11 +13,13 @@ public interface StopBo {
 
     Stop findStopById(int id);
 
-    Stop findSingleStopByName(String name);
+    Stop findSingleStopByNameAnCity(String name, City city);
 
     List<Stop> findStopsByName(String name);
 
     List<Stop> findStopsContainingName(String name);
+
+    List<Stop> findStopsInCity(City city);
 
     void saveStop(Stop stop);
 

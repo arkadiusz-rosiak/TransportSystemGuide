@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import pl.rosiakit.dao.StopDao;
+import pl.rosiakit.model.City;
 import pl.rosiakit.model.Stop;
 
 import java.util.List;
@@ -30,9 +31,10 @@ public class StopBoImpl implements StopBo {
     }
 
     @Override
-    public Stop findSingleStopByName(String name) {
+    public Stop findSingleStopByNameAnCity(String name, City city) {
         Assert.notNull(name, "Name must not be null");
-        return stopDao.findByName(name);
+        Assert.notNull(city, "City must not be null");
+        return stopDao.findByNameAndCity(name, city);
     }
 
     @Override
@@ -45,6 +47,12 @@ public class StopBoImpl implements StopBo {
     public List<Stop> findStopsContainingName(String name) {
         Assert.notNull(name, "Name must not be null");
         return stopDao.findByNameContainingOrderByNameAsc(name);
+    }
+
+    @Override
+    public List<Stop> findStopsInCity(City city) {
+        Assert.notNull(city, "City must not be null");
+        return stopDao.findByCityOrderByNameAsc(city);
     }
 
     @Override

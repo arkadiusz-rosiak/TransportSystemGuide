@@ -44,4 +44,9 @@ public interface ScheduleCrawler {
      */
     LocalDate validSince();
 
+    /**
+     * @return city name in which downloaded schedule is valid
+     */
+    String city();
+
 }

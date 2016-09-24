@@ -35,6 +35,7 @@ public class Application {
         LineBo lineBo = (LineBo) context.getBean("lineBo");
         RouteBo routeBo = (RouteBo) context.getBean("routeBo");
         DepartureBo departureBo = (DepartureBo) context.getBean("departureBo");
+        CityBo cityBo = (CityBo) context.getBean("cityBo");
 
         SchedulesDownloader.setPlatformBo(platformBo);
         SchedulesDownloader.setStopBo(stopBo);
@@ -42,6 +43,7 @@ public class Application {
         SchedulesDownloader.setLineBo(lineBo);
         SchedulesDownloader.setRouteBo(routeBo);
         SchedulesDownloader.setDepartureBo(departureBo);
+        SchedulesDownloader.setCityBo(cityBo);
     }
 
 }

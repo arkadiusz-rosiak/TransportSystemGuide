@@ -29,7 +29,12 @@ public class KombusCrawler extends ZTMPoznanCrawler implements ScheduleCrawler{
     public KombusCrawler(LocalDate date){
         super(date);
     }
-    
+
+    @Override
+    public String city() {
+        return "Środa Wielkopolska";
+    }
+
     @Override
     protected URL getRoutesByNameJsonUrl(){    
         String address = "http://kombus.pl/timetables/proxy.php?url="

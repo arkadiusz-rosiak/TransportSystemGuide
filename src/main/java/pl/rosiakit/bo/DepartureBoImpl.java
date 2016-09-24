@@ -1,6 +1,7 @@
 package pl.rosiakit.bo;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import pl.rosiakit.dao.DepartureDao;
 import pl.rosiakit.model.Departure;
 import pl.rosiakit.model.Line;
@@ -9,6 +10,7 @@ import pl.rosiakit.model.Platform;
 import javax.transaction.Transactional;
 import java.time.LocalTime;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
@@ -47,7 +49,7 @@ public class DepartureBoImpl implements DepartureBo {
     }
 
     @Override
-    public void deleteDeparture(Departure departure) {
-        departureDao.delete(departure);
+    public void deleteLineDepartures(Line line) {
+        departureDao.deleteLinesDeparture(line);
     }
 }

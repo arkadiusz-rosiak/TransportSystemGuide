@@ -47,8 +47,13 @@ public class ZTMPoznanCrawler extends AbstractJsonCrawler implements ScheduleCra
     @Override
     public LocalDate validSince() {
         return this.validSince;
-    }   
-    
+    }
+
+    @Override
+    public String city() {
+        return "Poznań";
+    }
+
     @Override
     public Set<LineDTO> getLines(){
                 

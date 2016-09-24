@@ -23,7 +23,9 @@ public class SchedulesDownloader {
     private static ConnectionBo connectionBo;
     private static DepartureBo departureBo;
     private static RouteBo routeBo;
-    private LocalDate ScheduleValidSince;
+    private static CityBo cityBo;
+    private LocalDate scheduleValidSince;
+    private City scheduleCity;
 
     static void setPlatformBo(PlatformBo platformBo) {
         SchedulesDownloader.platformBo = platformBo;
@@ -49,12 +51,17 @@ public class SchedulesDownloader {
         SchedulesDownloader.routeBo = routeBo;
     }
 
+    static void setCityBo(CityBo cityBo){
+        SchedulesDownloader.cityBo = cityBo;
+    }
+
     public void saveScheduleToDatabase(ScheduleCrawler crawler){
         System.out.println("-----------------------------");
         System.out.println(crawler.toString()+"...");
         System.out.println("-----------------------------");
 
-        ScheduleValidSince = crawler.validSince();
+        scheduleValidSince = crawler.validSince();
+        scheduleCity = getCityFromName(crawler.city());
 
         Set<LineDTO> linesNotSaved = new HashSet<>();
 
@@ -64,6 +71,9 @@ public class SchedulesDownloader {
             try {
                 System.out.println("Przetwarzanie lini " + lineDto.name + " (" + (++i) +"/"+crawlerLines.size()+")... ");
                 Line line = this.saveOrUpdateLine(lineDto);
+
+                System.out.println("\tusuwanie rozkładu jazdy tej linii...");
+                departureBo.deleteLineDepartures(line);
 
                 System.out.print("\tpobieranie przystankow...");
 
@@ -120,6 +130,22 @@ public class SchedulesDownloader {
 
     }
 
+    private City getCityFromName(String name){
+        City city = cityBo.findCityByName(name);
+        if(city != null){
+            return city;
+        }
+
+        return createCityFromName(name);
+    }
+
+    private City createCityFromName(String name){
+        City city = new City();
+        city.setName(name);
+        cityBo.saveCity(city);
+        return city;
+    }
+
     private List<Route> saveRoutes(Set<List<PlatformDTO>> routes, Line line){
 
         routeBo.deleteLineRoutes(line);
@@ -145,7 +171,7 @@ public class SchedulesDownloader {
                 route.setOrdinalNumber(ordinalNumber++);
                 route.setConnection(conn);
                 route.setLine(line);
-                route.setValidTo(ScheduleValidSince);
+                route.setValidTo(scheduleValidSince);
                 it.add(route);
 
             }
@@ -241,7 +267,6 @@ public class SchedulesDownloader {
         departure.setDepartureTime(departureDto.time);
         departure.setLine(line);
         departure.setPlatform(platform);
-        departure.setValidSince(ScheduleValidSince);
         departure.setDayType(dayType);
         return departure;
 
@@ -250,16 +275,20 @@ public class SchedulesDownloader {
     private void saveAllStops(Set<PlatformDTO> stops){
         stops.stream().filter(stopData -> stopData.platform != null && stopData.stopName != null).forEach(stopData -> {
             Stop stop = this.saveStop(stopData);
-            this.savePlatform(stopData.platform, stop, stopData);
+
+            if(platformBo.findById(stopData.platform) == null) {
+                this.savePlatform(stopData.platform, stop, stopData);
+            }
         });
     }
 
     private Stop saveStop(PlatformDTO stopData){
-        Stop stop = stopBo.findSingleStopByName(stopData.stopName);
+        Stop stop = stopBo.findSingleStopByNameAnCity(stopData.stopName, scheduleCity);
 
         if(stop == null){
             stop = new Stop();
             stop.setName(stopData.stopName);
+            stop.setCity(scheduleCity);
             stopBo.saveStop(stop);
         }
 
@@ -294,7 +323,7 @@ public class SchedulesDownloader {
         Line lineInDB = lineBo.findLineByAgencyAndName(lineDto.agencyName, lineDto.name);
 
         if(lineInDB != null){
-            lineInDB.setValidSince(ScheduleValidSince);
+            lineInDB.setValidSince(scheduleValidSince);
             lineBo.saveLine(lineInDB);
         }
         else{
@@ -309,7 +338,7 @@ public class SchedulesDownloader {
         line.setName(lineDto.name);
         line.setAgencyName(lineDto.agencyName);
         line.setType(VehicleType.valueOf(lineDto.type.toString()));
-        line.setValidSince(ScheduleValidSince);
+        line.setValidSince(scheduleValidSince);
 
         lineBo.saveLine(line);
         return line;

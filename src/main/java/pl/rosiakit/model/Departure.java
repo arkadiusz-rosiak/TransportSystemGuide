@@ -3,7 +3,6 @@ package pl.rosiakit.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
@@ -29,9 +28,7 @@ public class Departure implements Serializable, Comparable<Departure>{
     @Column(nullable = false)
     private LocalTime departureTime;
     
-    @Column(nullable = false)
-    private LocalDate validSince;
-    
+
     @Column(nullable = false)
     private int dayType;
 
@@ -43,18 +40,6 @@ public class Departure implements Serializable, Comparable<Departure>{
         this.dayType = dayType;
     }
 
-    public LocalDate getValidSince() {
-        return validSince;
-    }
-
-    public void setValidSince(LocalDate validTo) {
-        this.validSince = validTo;
-    }
-    
-    public boolean isValid(){
-        return this.validSince.compareTo(LocalDate.now()) > 0;
-    }
-    
     public int getId() {
         return id;
     }

@@ -87,15 +87,22 @@ class JourneyFactory {
             else{
                 Platform platform = edge.getSource();
 
+                // dodanie czasu na przesiadke
                 if(prevEdge != null && !prevEdge.getTarget().equals(edge.getSource())){
                     prevDeparture = prevDeparture.plusMinutes(2);
                 }
 
-                List<Departure> departures
-                        = departureBo.findLineDeparturesAfter(platform, daytype.getValue(), line, prevDeparture);
+                Departure departure;
 
-                if(!departures.isEmpty()) {
-                    prevDeparture = departures.get(0).getDepartureTime();
+                if(prevLine != null && line.equals(prevLine)) {
+                    departure = departureBo.findLineDepartureAbout(platform, daytype.getValue(), line, prevDeparture);
+                }
+                else{
+                    departure = departureBo.findLineDepartureAfter(platform, daytype.getValue(), line, prevDeparture);
+                }
+
+                if(departure != null) {
+                    prevDeparture = departure.getDepartureTime();
                     departureTimes.add(prevDeparture);
                 }
                 else{

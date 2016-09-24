@@ -9,7 +9,6 @@ import pl.rosiakit.model.Platform;
 import javax.transaction.Transactional;
 import java.time.LocalTime;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
@@ -26,8 +25,15 @@ public class DepartureBoImpl implements DepartureBo {
     }
 
     @Override
-    public List<Departure> findLineDeparturesAfter(Platform platform, int dayType, Line line, LocalTime time) {
-        return departureDao.findLineDeparturesAfter(platform, dayType, line, time);
+    public Departure findLineDepartureAfter(Platform platform, int dayType, Line line, LocalTime time) {
+        return departureDao.findTop1ByPlatformAndDayTypeAndLineAndDepartureTimeGreaterThanOrderByDepartureTimeAsc
+                (platform, dayType, line, time);
+    }
+
+    @Override
+    public Departure findLineDepartureAbout(Platform platform, int dayType, Line line, LocalTime time) {
+         return departureDao.findTop1ByPlatformAndDayTypeAndLineAndDepartureTimeGreaterThanOrderByDepartureTimeAsc
+                 (platform, dayType, line, time.minusMinutes(3));
     }
 
     @Override

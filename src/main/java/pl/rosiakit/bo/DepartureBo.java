@@ -6,7 +6,6 @@ import pl.rosiakit.model.Platform;
 
 import java.time.LocalTime;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Arkadiusz Rosiak (http://www.rosiak.it)
@@ -14,7 +13,9 @@ import java.util.List;
  */
 public interface DepartureBo {
 
-    List<Departure> findLineDeparturesAfter(Platform platform, int dayType, Line line, LocalTime time);
+    Departure findLineDepartureAfter(Platform platform, int dayType, Line line, LocalTime time);
+
+    Departure findLineDepartureAbout(Platform platform, int dayType, Line line, LocalTime time);
 
     void saveDeparture(Departure departure);
 

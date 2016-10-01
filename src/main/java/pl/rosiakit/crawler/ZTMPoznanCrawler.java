@@ -412,7 +412,11 @@ public class ZTMPoznanCrawler extends AbstractJsonCrawler implements ScheduleCra
     }
     
     private PlatformDTO getPrevStop(PlatformDTO beforeStop){
-        
+
+        if(beforeStop == null){
+            return null;
+        }
+
         JsonElement timetable = this.getTimetableAsJsonElement(beforeStop);
         
         JsonElement routeElement = this.getJsonChildAsJsonElement("route", timetable);
@@ -454,6 +458,11 @@ public class ZTMPoznanCrawler extends AbstractJsonCrawler implements ScheduleCra
     
     
     private PlatformDTO getNextStop(PlatformDTO afterStop){
+
+        if(afterStop == null){
+            return null;
+        }
+
         JsonElement timetable = this.getTimetableAsJsonElement(afterStop);
 
         JsonElement routeElement = this.getJsonChildAsJsonElement("route", timetable);
@@ -499,6 +508,7 @@ public class ZTMPoznanCrawler extends AbstractJsonCrawler implements ScheduleCra
     }
                 
     private JsonElement getTimetableAsJsonElement(PlatformDTO stop){
+
         URL url = this.getTimetableJsonUrl(stop);
         String webContent = this.readUrl(url);
         webContent = this.prepareJsonString(webContent);

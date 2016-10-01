@@ -57,6 +57,7 @@ public class KombusCrawler extends ZTMPoznanCrawler implements ScheduleCrawler{
     
     @Override
     protected URL getTimetableJsonUrl(PlatformDTO stop){
+
         String address = "http://kombus.pl/timetables/proxy.php?url="
                 + "http://178.250.45.138/dbServices/gtfs-kombus/timetable.json.php%3F"
                 + "route_name%3D" + stop.routeName
@@ -91,4 +92,5 @@ public class KombusCrawler extends ZTMPoznanCrawler implements ScheduleCrawler{
     public String toString() {
         return "KombusCrawler";
     }
+
 }

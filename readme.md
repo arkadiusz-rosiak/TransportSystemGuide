@@ -7,7 +7,7 @@ best algorithm and requires much work). The main reason to do this project was l
 imperfections but I'm still learning and I hope someday I find them and will never ever make them again :)
 
 Live API preview is available here: http://api-rosiakit.rhcloud.com
-And here is sample web application using it: http://rosiak.it/ptsg/ (I'm not the best in front-end :) )
+And here is sample web application using it: http://transport.rosiak.it/ (I'm not the best in front-end :) )
 
 Live preview contains data about Poznań (data gathered by ZTMPoznanCrawler) and Sroda Wielkopolska (data gathered by KombusCrawler).
 

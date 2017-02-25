@@ -1,6 +1,8 @@
 
 # Transport System Guide
 
+**Important fact is that it was my first big project and unfortunately it's not created using neither design patterns nor test driven development**
+
 This project is based on **Java 8** + **Spring boot 1.4** + **Hibernate 5.2** + **Maven 3**. Transport System Guide helps
 in planning journeys via public transport. It can find both direct and indirect journeys (However this is not the 
 best algorithm and requires much work). The main reason to do this project was learning java and I know that there are many
